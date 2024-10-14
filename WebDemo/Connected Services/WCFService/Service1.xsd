@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ProductInfo_Wcf" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ProductInfo_Wcf" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfAllProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AllProduct" nillable="true" type="tns:AllProduct" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAllProduct" nillable="true" type="tns:ArrayOfAllProduct" />
+  <xs:complexType name="AllProduct">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="OfferPrice" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="cPName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="iCatId" type="xs:int" />
+      <xs:element minOccurs="0" name="iPrice" type="xs:decimal" />
+      <xs:element minOccurs="0" name="iProdId" type="xs:int" />
+      <xs:element minOccurs="0" name="iQoh" type="xs:int" />
+      <xs:element minOccurs="0" name="vBrand" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vImagePath" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AllProduct" nillable="true" type="tns:AllProduct" />
+  <xs:complexType name="CreateCart">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cPName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="iPrice" type="xs:decimal" />
+      <xs:element minOccurs="0" name="iProdId" type="xs:int" />
+      <xs:element minOccurs="0" name="iQoh" type="xs:int" />
+      <xs:element minOccurs="0" name="vDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vImagePath" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateCart" nillable="true" type="tns:CreateCart" />
+</xs:schema>
