@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Category", "..\FinalProject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductInfo_Wcf", "..\..\..\Downloads\ProductInfo_Wcf\ProductInfo_Wcf\ProductInfo_Wcf\ProductInfo_Wcf.csproj", "{867C0464-1190-4F50-8A99-BCA578B464EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ccdll", "ccdll\ccdll.csproj", "{A0C9A7DA-8EC0-4438-96C2-2BA23EAA2FB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{867C0464-1190-4F50-8A99-BCA578B464EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{867C0464-1190-4F50-8A99-BCA578B464EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{867C0464-1190-4F50-8A99-BCA578B464EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C9A7DA-8EC0-4438-96C2-2BA23EAA2FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C9A7DA-8EC0-4438-96C2-2BA23EAA2FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C9A7DA-8EC0-4438-96C2-2BA23EAA2FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C9A7DA-8EC0-4438-96C2-2BA23EAA2FB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
