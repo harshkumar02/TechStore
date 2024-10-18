@@ -10,6 +10,9 @@ using WebDemo.WCFService;
 using ccdll;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Configuration;
+using System.Xml.Linq;
+using System.Drawing;
 namespace WebDemo
 {
     public partial class ShoppingCart : System.Web.UI.Page
@@ -100,7 +103,7 @@ namespace WebDemo
         protected void btnBuy_Click(object sender, EventArgs e)
         {
             SignInCtrl.Visible = true;
-            //PanelPincheck.Visible = false;
+            
 
         }
 
@@ -197,22 +200,107 @@ namespace WebDemo
 
         protected void btnPayment_Click(object sender, EventArgs e)
         {
-           // UpdatePanelCc.Visible = true;
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ShopConnectionString"].ToString()))
+            {
+                SqlDataAdapter da = new SqlDataAdapter("insOrder", con);
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                //da.SelectCommand.Parameters.AddWithValue("d", DateTime.Now);
+                da.SelectCommand.Parameters.AddWithValue("@c", SignInCtrl.UserName);
+                da.SelectCommand.Parameters.AddWithValue("@add", txtaddress.Text.Trim().ToString());
+                da.SelectCommand.Parameters.AddWithValue("p", dropdownPaymentMethod.SelectedValue.ToString());
+                SqlParameter sp = new SqlParameter("@oid", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output,
+                };
+                da.SelectCommand.Parameters.Add(sp);
+
+                List<CreateCart> cart = (List<CreateCart>)Session["cart"];
+                SqlTransaction sqltrans = null;
+
+                try
+                {
+                    con.Open();
+                    // Begin SQL transaction
+                    sqltrans = con.BeginTransaction();
+                    da.SelectCommand.Transaction = sqltrans;
+
+                    // Insert the order
+                    da.SelectCommand.ExecuteNonQuery();
+                    int neworderId = (int)sp.Value; // Retrieve the new Order ID
+
+                    // Loop through each item in the cart and insert into OrderDetails
+                    foreach (CreateCart cc in cart)
+                    {
+                        using (SqlCommand cmd = new SqlCommand("insODetails", con, sqltrans))
+                        {
+                            // Insert order details for each product
+                            int productid = cc.iProdId;
+                            int quantity = cc.iQoh;
+                            int price = (int)cc.iPrice * quantity;
+
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            // Use the correct parameter names
+                            cmd.Parameters.AddWithValue("@iOrderID", neworderId); //  Order ID
+                            cmd.Parameters.AddWithValue("@iProdID", productid);  // Product ID
+                            cmd.Parameters.AddWithValue("@iQtySold", quantity);  // Quantity
+                            cmd.Parameters.AddWithValue("@iSPrice", price);      // Price * Quantity
+
+                            // Execute the order details insertion
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+
+                    // Commit the transaction if all goes well
+                    sqltrans.Commit();
+                    con.Close();
+
+                    Session["cart"] = null; // Clear the cart
+                    lblMsg.Text = "Order placed successfully!";
+                    Session.Abandon();
+                    
+
+                   // Session["cart"] = null;
+                    UpdateCart();
+
+                }
+                catch (Exception ex)
+                {
+                    lblMsg.Text = ex.Message;
+                    // Rollback the transaction in case of an error
+                    if (sqltrans != null)
+                    {
+                        sqltrans.Rollback();
+                    }
+                   // con.Close();
+                }
+                finally
+                {
+                    // Always close the connection
+                    con.Close();
+                }
+            }
+
+
+
+            // UpdatePanelCc.Visible = true;
             lblMsg.Visible = true;
-            lblMsg.Text = "Your order is sucessful";
+            //lblMsg.Text = "Your order is sucessful";
+            
         }
 
         protected void dropdownPaymentMethod_SelectedIndexChanged1(object sender, EventArgs e)
         {
             if (dropdownPaymentMethod.SelectedIndex == 1)
-            {
-                btnPayment.Enabled = false;
-                UpdatePanelCc.Visible = true;
-            }
+                {
+                    btnPayment.Enabled = false;
+                    UpdatePanelCc.Visible = true;
+                }
             else
-            {
-                UpdatePanelCc.Visible=false;
-            }
+                {
+                    UpdatePanelCc.Visible=false;
+                }
                 
         }
 
@@ -257,3 +345,6 @@ namespace WebDemo
         }
     }
 }
+
+
+
