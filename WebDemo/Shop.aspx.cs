@@ -40,7 +40,9 @@ namespace WebDemo
             ProductClient pc = new ProductClient();
             CreateCart cart = new CreateCart();
             cart = pc.GetCreateCart(NewProdId);
-
+            
+            
+            
             //if (dcart == null)
             //{
             //	dcart = new List<CreateCart>();
@@ -71,8 +73,12 @@ namespace WebDemo
             // save the updated cart back into the session
             Session["cart"] = dcart;
 
+            // Trigger Toastr notification
+            string script = "toastr.success('Item added to cart.');";
+            ScriptManager.RegisterStartupScript(this, GetType(), "toastrMessage", script, true);
+
             // Redirect to  Shopping Cart page
-            Response.Redirect("ShoppingCart.aspx");
+            // Response.Redirect("Shop.aspx");
         }
     }
 }

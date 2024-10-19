@@ -58,5 +58,10 @@ namespace WebDemo
                 itemcount.Text = "0";
             }
         }
+
+        protected void Image1_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("ShoppingCart.aspx");
+        }
     }
 }

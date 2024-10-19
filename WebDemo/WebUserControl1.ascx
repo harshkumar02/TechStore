@@ -1,11 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WebUserControl1.ascx.cs" Inherits="WebDemo.WebUserControl1" %>
 
-<p>
-    <asp:Label ID="MyShoppingCart" runat="server" Text="My Shopping Cart" style ="font-size : 40px;color:blue; "></asp:Label>
+<p style="background-color : dimgrey;">
+
+    <asp:Label ID="MyShoppingCart" runat="server" Text="My Shopping Site" style ="font-size : 40px;color:black; "></asp:Label>
 
     <span style="float:right">
-    <asp:Image ID="Image1" runat="server" Height="50px" ImageUrl="~/Images/cart.jpg" />
-    <asp:Label ID="itemcount" runat="server" Text="0" style="float:right"></asp:Label>
+    <asp:Label ID="itemcount" runat="server" Text="0" style="float:right" Height="20px" Width="45px"></asp:Label>
+    <asp:ImageButton ID="Image1" runat="server" Height="50px"   ImageUrl ="~/Images/cart.png" OnClick="Image1_Click" />
         </span>
     
 </p>

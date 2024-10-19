@@ -6,7 +6,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
               
-    <title></title>
+   
+<title></title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 <body>
@@ -60,22 +64,18 @@
                         <br />
                        
                         <p>
-    <%# Eval("OfferPrice") == DBNull.Value || Convert.ToDecimal(Eval("OfferPrice")) == 0 ? 
-        $"<span>{Eval("iPrice", "{0:C}")}</span>" : 
-        $"<span style='text-decoration: line-through; color: red;'>{Eval("iPrice", "{0:C}")}</span> <span style='color: green;'>{Eval("OfferPrice", "{0:C}")}</span>" %>
-</p>
+                            <%# Eval("OfferPrice") == DBNull.Value || Convert.ToDecimal(Eval("OfferPrice")) == 0 ? 
+                            $"<span>{Eval("iPrice", "{0:C}")}</span>" : 
+                            $"<span style='text-decoration: line-through; color: red;'>{Eval("iPrice", "{0:C}")}</span> <span style='color: green;'>{Eval("OfferPrice", "{0:C}")}</span>" %>
+                        </p>
                         
                        <%-- <asp:Label ID="iPriceLabel" runat="server" Text='<%# Eval("iPrice") %>' />
                         <br />
                         
                         <asp:Label ID="iQohLabel" runat="server" Text='<%# Eval("iQoh") %>' />
-                        <br />--%>
-                      
-                     
-
-                       
+                        <br />--%>                   
             
-                        <asp:Button ID="btnAdd" runat="server" Text="Add To Cart" OnClick="btnAdd_Click" CommandArgument='<%# Eval("iProdID") %>' />
+                        <asp:Button ID="btnAdd" runat="server" Text="Add To Cart" OnClick="btnAdd_Click" CommandArgument='<%# Eval("iProdID") %>'  />
                        <%-- <asp:Image ID="Image1" runat="server" width="50px" ImageUrl ='<%# Eval("vImagePath") %>'/>--%>
 
                         

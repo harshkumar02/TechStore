@@ -111,7 +111,7 @@ namespace WebDemo
         {
             lblWelcome.Text = $"Welcome {SignInCtrl.UserName}";
             //PanelPayment.Visible = true; // Display the payment panel
-            PanelPincheck.Visible = true;
+            PanelPincheck.Visible = true;            
         }
 
         private void SignInControl1_GuestClicked(object sender, EventArgs e)
@@ -279,6 +279,8 @@ namespace WebDemo
                 {
                     // Always close the connection
                     con.Close();
+                    Session["cart"] = null;
+                    Response.Redirect("Shop.aspx");
                 }
             }
 
@@ -307,9 +309,10 @@ namespace WebDemo
         protected void btnSaveCard_Click(object sender, EventArgs e)
         {
             DateTime expiry = DateTime.Parse(txtcardexpiry.Text);
-            if (expiry < DateTime.Now)
+            if (expiry < DateTime.Now || lblcardcompany.Text == "Invalid Card Number")
             {
-                lblcardcompany.Text = $"Your {lblcardcompany.Text} card is Expired ";
+                lblcardcompany.Text = "";
+                lblcardcompany.Text = $"Your {lblcardcompany.Text} card is Expired OR Card Number is Invalid";
                 btnSaveCard.Enabled = false;
             }
             else
@@ -324,6 +327,7 @@ namespace WebDemo
 
         protected void txtcardNumber_TextChanged(object sender, EventArgs e)
         {
+           // btnSaveCard.Enabled=true;
             string cardnum = txtcardNumber.Text;
 
             CardCheck cardcc = new CardCheck(cardnum);
@@ -334,11 +338,18 @@ namespace WebDemo
             // Display the card company name in the label
             lblcardcompany.Text = cardcompany;
 
+            if (lblcardcompany.Text != "Invalid Card Number" || lblcardcompany.Text != "Unknown card company")
+            {
+                
+                btnSaveCard.Enabled = true;
+            }
+
+
         }
 
         protected void txtcardexpiry_TextChanged(object sender, EventArgs e)
         {
-            txtcardNumber_TextChanged(sender, e);
+            //txtcardNumber_TextChanged(sender, e);
             btnSaveCard.Enabled = true;
 
 

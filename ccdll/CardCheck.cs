@@ -55,7 +55,7 @@ namespace ccdll
 
             else
             {
-                return "Inavlid Card Number";
+                return "Invalid Card Number";
             }
         }
 
