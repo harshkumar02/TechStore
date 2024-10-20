@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Data;
 using System.Runtime.Serialization;
 using WebDemo.WCFService;
+using System.Web.Services;
 
 namespace WebDemo
 {
@@ -44,9 +45,7 @@ namespace WebDemo
 
         public void updateCartQuantity()
         {
-            //
-            
-
+         
             List<CreateCart> prod = (List<CreateCart>)Session["cart"];
             if (prod != null)
             {
@@ -63,5 +62,7 @@ namespace WebDemo
         {
             Response.Redirect("ShoppingCart.aspx");
         }
+
+        
     }
 }

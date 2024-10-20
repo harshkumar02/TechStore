@@ -38,12 +38,19 @@
         <div>
             <PCat:Cat ID="listCat" runat="server" />
         </div>
-        <asp:GridView ID="gvShowCart" runat="server" AutoGenerateColumns="False" DataKeyNames="iProdID" OnRowDeleting="gvShowCart_RowDeleting" OnSelectedIndexChanged="gvShowCart_SelectedIndexChanged" Height="259px">
+        <asp:GridView ID="gvShowCart" runat="server" AutoGenerateColumns="False" DataKeyNames="iProdID"  OnRowDataBound="gvShowCart_RowDataBound" OnRowDeleting="gvShowCart_RowDeleting" OnSelectedIndexChanged="gvShowCart_SelectedIndexChanged" Height="259px" Width="342px">
             <Columns>
                 <asp:BoundField DataField="iProdId" HeaderText="Product ID" Visible="false" />
                 <asp:BoundField DataField="cPName" HeaderText="Product Name" />
                 <asp:BoundField DataField="iPrice" HeaderText="Price" DataFormatString="{0:C}" />
-                <asp:BoundField DataField="iQoh" HeaderText="Quantity" />
+                <asp:TemplateField HeaderText="Quantity">
+            <ItemTemplate>
+                <asp:DropDownList ID="ddlQuantity" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlQuantity_SelectedIndexChanged">
+
+</asp:DropDownList>
+            </ItemTemplate>
+        </asp:TemplateField>
+
                <asp:TemplateField HeaderText="Delete">
                 <ItemStyle HorizontalAlign="Center" />
         <ItemTemplate>

@@ -15,9 +15,17 @@
 </head>
 <body>
     <form id="form1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <div>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
             <%--<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ShopConnectionString %>" SelectCommand="SELECT * FROM [Product]"></asp:SqlDataSource>
            --%> <PCat:Cat ID="listCat" runat="server" />
+            </ContentTemplate>
+       <%-- <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="btnAdd" EventName="Click" />
+        </Triggers>--%>
+        </asp:UpdatePanel>
         </div>
 
             <asp:ListView ID="lstProduct" runat="server" DataKeyNames="iProdId" GroupItemCount="3" OnSelectedIndexChanged="lstProduct_SelectedIndexChanged" >
@@ -75,7 +83,9 @@
                         <asp:Label ID="iQohLabel" runat="server" Text='<%# Eval("iQoh") %>' />
                         <br />--%>                   
             
-                        <asp:Button ID="btnAdd" runat="server" Text="Add To Cart" OnClick="btnAdd_Click" CommandArgument='<%# Eval("iProdID") %>'  />
+                        <asp:Button ID="btnAdd" runat="server" Text="Add To Cart"  OnClick="btnAdd_Click" CommandArgument='<%# Eval("iProdID") %>'  CssClass="orange-button" Enabled='<%# (int)(Eval("iQoh")) > 0 %>' />
+                        <asp:Label ID="lblStock" runat="server" Text="Out Of Stock" Visible='<%# (int)(Eval("iQoh")) <= 0 %>' ForeColor="Red"></asp:Label>
+
                        <%-- <asp:Image ID="Image1" runat="server" width="50px" ImageUrl ='<%# Eval("vImagePath") %>'/>--%>
 
                         
@@ -105,6 +115,17 @@
                
             </asp:ListView>
       <%--  <asp:SqlDataSource ID="ShopDB" runat="server" ConnectionString="<%$ ConnectionStrings:ShopConnectionString %>" SelectCommand="SELECT * FROM [Product]"></asp:SqlDataSource>--%>
+     <%--   <script>
+            // Function to show Toastr notification
+            function showToastrNotification() {
+                toastr.success('Item added to cart!');
+            }
+
+            // Use the PageRequestManager to show the notification after the UpdatePanel refreshes
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                showToastrNotification();
+            });
+    </script>--%>
 
     </form>
 </body>

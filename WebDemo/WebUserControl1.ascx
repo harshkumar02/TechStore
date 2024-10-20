@@ -5,18 +5,15 @@
     <asp:Label ID="MyShoppingCart" runat="server" Text="My Shopping Site" style ="font-size : 40px;color:black; "></asp:Label>
 
     <span style="float:right">
-    <asp:Label ID="itemcount" runat="server" Text="0" style="float:right" Height="20px" Width="45px"></asp:Label>
-    <asp:ImageButton ID="Image1" runat="server" Height="50px"   ImageUrl ="~/Images/cart.png" OnClick="Image1_Click" />
-        </span>
+        <asp:Label ID="itemcount" runat="server" Text="0" style="float:right" Height="20px" Width="45px"></asp:Label>
+        <asp:ImageButton ID="Image1" runat="server" Height="50px"   ImageUrl ="~/Images/cart.png" OnClick="Image1_Click" />
+      </span>
     
 </p>
 <p>
     &nbsp;</p>
 <asp:ListView ID="lstCat" runat="server" DataKeyNames="iCatID" >
     
-   
-    
-  
     <EmptyDataTemplate>
         <table style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
             <tr>

@@ -8,6 +8,8 @@ using System.Data.SqlClient;
 using System.Configuration;
 using WebDemo.WCFService;
 using System.Web.UI.WebControls.WebParts;
+using System.Web.Services;
+using System.Data;
 
 namespace WebDemo
 {
@@ -22,27 +24,47 @@ namespace WebDemo
                 var categories = prodClient.GetProductsData(Convert.ToInt32(Request.QueryString["cid"]));
                 lstProduct.DataSource = categories;
                 lstProduct.DataBind();
+                
+                //string script = "toastr.success('Item added to cart.');";
+                //ScriptManager.RegisterStartupScript(this, GetType(), "toastrMessage", script, true);
+
 
             }
+
+            
+
+            
         }
+
+    
 
         protected void lstProduct_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
+
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            int NewProdId = Convert.ToInt32(b.CommandArgument); //CommandArgument to get ProductID
+            int NewProdId = Convert.ToInt32(b.CommandArgument); 
             List<CreateCart> dcart = (List<CreateCart>)Session["cart"];
 
             ProductClient pc = new ProductClient();
             CreateCart cart = new CreateCart();
             cart = pc.GetCreateCart(NewProdId);
-            
-            
-            
+
+            //if (cart == null)
+            //{
+            //    cart = new List<int>();
+            //    Session["cart"] = cart;
+            //}
+            //cart.Add(productId);
+            //string script = "toastr.success('Item added to cart.');";
+            //ScriptManager.RegisterStartupScript(this, GetType(), "toastrMessage", script, true);
+
+
+
             //if (dcart == null)
             //{
             //	dcart = new List<CreateCart>();
@@ -74,11 +96,16 @@ namespace WebDemo
             Session["cart"] = dcart;
 
             // Trigger Toastr notification
-            string script = "toastr.success('Item added to cart.');";
-            ScriptManager.RegisterStartupScript(this, GetType(), "toastrMessage", script, true);
+            //string script = "toastr.success('Item added to cart.');";
+            //ScriptManager.RegisterStartupScript(this, GetType(), "toastrMessage", script, true);
 
             // Redirect to  Shopping Cart page
             // Response.Redirect("Shop.aspx");
+            //return false;
         }
+
+       
     }
+
+  
 }

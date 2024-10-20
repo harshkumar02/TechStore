@@ -25,7 +25,7 @@ namespace WebDemo
             // PanelPayment.Visible = false;
             if (!IsPostBack)
             {
-                
+                BindCart();
                 UpdateCart();
             }
             SignInCtrl.SignInClicked += SignInControl1_SignInClicked;
@@ -43,7 +43,7 @@ namespace WebDemo
                 gvShowCart.DataBind();
 
                 // Calculate the total price of the cart
-                decimal totalPrice = dcart.Sum(p => p.iQoh * p.iPrice); //  iPrice is the price of the product
+                decimal totalPrice = dcart.Sum(p => p.iQoh * p.iPrice); // iPrice is the price of the product
                 lblTotalPrice.Text = $"Total Price: {totalPrice:C}"; // Display the total price in  label
 
                 // Save the total price to the session
@@ -56,6 +56,72 @@ namespace WebDemo
                 lblTotalPrice.Text = "Total Price: ₹0.00";
             }
         }
+
+        private void BindCart()
+        {
+            // Replace with your actual connection string
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["ShopConnectionString"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT iProdID, cPName, iPrice FROM product", conn);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                gvShowCart.DataSource = dt;
+                gvShowCart.DataBind();
+            }
+        }
+
+        protected void gvShowCart_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                // Get the product ID from the current row
+                string productId = DataBinder.Eval(e.Row.DataItem, "iProdID").ToString();
+
+                // Fetch the quantity (iQoh) from the database
+                int maxQuantity = GetProductQuantity(productId);
+
+                // Find the DropDownList in the current row
+                DropDownList ddlQuantity = (DropDownList)e.Row.FindControl("ddlQuantity");
+
+                // Populate the dropdown with quantities from 1 to maxQuantity
+                if (ddlQuantity != null)
+                {
+                    for (int i = 1; i <= maxQuantity; i++)
+                    {
+                        ddlQuantity.Items.Add(new ListItem(i.ToString(), i.ToString()));
+                    }
+                }
+            }
+        }
+
+        private int GetProductQuantity(string productId)
+        {
+            int quantity = 0;
+
+            
+            string connString = System.Configuration.ConfigurationManager.ConnectionStrings["ShopConnectionString"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT iQoh FROM Product WHERE iProdID = @iProdID", conn);
+                cmd.Parameters.AddWithValue("@iProdID", productId);
+                object result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    quantity = Convert.ToInt32(result);
+                }
+            }
+            return quantity;
+        }
+
+
 
         private List<CartItem> GetCartItems()
         {
@@ -252,7 +318,7 @@ namespace WebDemo
                     }
 
 
-                    // Commit the transaction if all goes well
+                    
                     sqltrans.Commit();
                     con.Close();
 
@@ -354,6 +420,28 @@ namespace WebDemo
 
 
         }
+
+        protected void ddlQuantity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //UpdateCart();
+
+            DropDownList ddl = (DropDownList)sender;
+            GridViewRow row = (GridViewRow)ddl.NamingContainer;
+            int productID = Convert.ToInt32(gvShowCart.DataKeys[row.RowIndex].Value);
+
+            List<CreateCart> dcart = Session["cart"] as List<CreateCart>;
+            if (dcart != null)
+            {
+                var itemToUpdate = dcart.FirstOrDefault(item => item.iProdId == productID);
+                if (itemToUpdate != null)
+                {
+                    itemToUpdate.iQoh = Convert.ToInt32(ddl.SelectedValue);
+                }
+                Session["cart"] = dcart; // Save the updated list back to the session
+                UpdateCart(); // Recalculate the total price
+            }
+        }
+
     }
 }
 
